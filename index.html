@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafaf8;
+      --fg: #1a1a18;
+      --fg-muted: #6b6b66;
+      --fg-faint: #b0b0aa;
+      --border: #e4e4de;
+      --accent: #1a1a18;
+      --tag-bg: #f0f0ea;
+      --card-bg: #ffffff;
+      --link: #2563eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111110;
+        --fg: #f0efe8;
+        --fg-muted: #9a9992;
+        --fg-faint: #4a4a44;
+        --border: #2a2a26;
+        --accent: #f0efe8;
+        --tag-bg: #1e1e1a;
+        --card-bg: #181816;
+        --link: #60a5fa;
+      }
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    nav {
+      padding: 32px 0 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 20px;
+    }
+
+    .nav-name {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--fg-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    /* Sections */
+    section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      margin-bottom: 40px;
+    }
+
+    /* Hero */
+    #about {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 600px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+      .hero-photo { aspect-ratio: 4/3; min-height: unset; }
+    }
+
+    .hero-text {
+      padding: 80px 40px 80px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-photo {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(8%);
+    }
+
+    .hero-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    .hero-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .hero-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--fg-faint);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 52px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--fg);
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .hero-bio {
+      font-size: 17px;
+      color: var(--fg-muted);
+      max-width: 480px;
+      line-height: 1.75;
+      margin-bottom: 36px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--fg);
+      padding-bottom: 2px;
+      transition: opacity 0.15s;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-cta:hover { opacity: 0.55; }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-group { }
+
+    .skill-group-title {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 12px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      background: var(--tag-bg);
+      color: var(--fg-muted);
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+
+    /* Projects */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 24px;
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.15s;
+    }
+
+    .project-item:first-child { border-top: none; padding-top: 0; }
+    .project-item:hover { opacity: 0.6; }
+
+    .project-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--fg);
+      margin-bottom: 6px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .project-tag {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--fg-faint);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .project-arrow {
+      font-size: 18px;
+      color: var(--fg-faint);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Contact */
+    .contact-intro {
+      font-size: 15px;
+      color: var(--fg-muted);
+      margin-bottom: 32px;
+      max-width: 420px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--fg);
+      font-size: 14px;
+      transition: opacity 0.15s;
+    }
+
+    .contact-link:last-child { border-bottom: 1px solid var(--border); }
+    .contact-link:hover { opacity: 0.5; }
+
+    .contact-link-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contact-platform {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--fg-faint);
+      width: 64px;
+    }
+
+    .contact-value { font-weight: 400; color: var(--fg); }
+
+    .contact-arrow { color: var(--fg-faint); font-size: 16px; }
+
+    /* Internship */
+    .internship-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .internship-item {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .internship-item:first-child { border-top: none; padding-top: 0; }
+
+    .internship-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .internship-company {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--fg);
+    }
+
+    .internship-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--fg-faint);
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .internship-role {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-bottom: 16px;
+    }
+
+    .internship-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .internship-points li {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.65;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .internship-points li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--fg-faint);
+      font-size: 12px;
+    }
+
+    .internship-points li strong {
+      color: var(--fg);
+      font-weight: 500;
+    }
+
+    .hobby-card--photo .photo-gallery {
+      margin-bottom: 16px;
+    }
+
+    .photo-main {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .photo-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.25s ease;
+    }
+
+    .photo-thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+
+    .thumb:hover { opacity: 0.85; }
+    .thumb.active { opacity: 1; border-color: var(--fg-muted); }
+
+    /* Daily photos strip */
+    .daily-strip {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .daily-strip-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      margin-bottom: 16px;
+    }
+
+    .daily-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .daily-photo {
+      aspect-ratio: 3/4;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .daily-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .daily-photo:hover img { transform: scale(1.03); }
+
+    /* Hobbies */
+    .hobbies-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 540px) {
+      .hobbies-grid { grid-template-columns: 1fr; }
+    }
+
+    .hobby-card { }
+
+    .hobby-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hobby-img-placeholder:hover { border-color: var(--fg-muted); }
+
+    .hobby-img-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hobby-img-placeholder .placeholder-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--fg-faint);
+      letter-spacing: 0.08em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .hobby-img-placeholder .placeholder-icon {
+      font-size: 24px;
+      color: var(--fg-faint);
+    }
+
+    .hobby-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--fg);
+      margin-bottom: 8px;
+    }
+
+    .hobby-desc {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.65;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--fg-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* Fade in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow { animation: fadeUp 0.5s ease both 0.1s; }
+    h1 { animation: fadeUp 0.5s ease both 0.2s; }
+    .hero-bio { animation: fadeUp 0.5s ease both 0.3s; }
+    .hero-cta { animation: fadeUp 0.5s ease both 0.4s; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a class="nav-name" href="#">赵紫怡</a>
+      <ul class="nav-links">
+        <li><a href="#about">关于</a></li>
+        <li><a href="#skills">技能</a></li>
+        <li><a href="#internship">实习</a></li>
+        <li><a href="#projects">项目</a></li>
+        <li><a href="#hobbies">爱好</a></li>
+        <li><a href="#contact">联系</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero / About -->
+  <section id="about">
+    <div class="container" style="max-width:100%; padding:0;">
+      <div class="hero-inner">
+        <div class="hero-text container">
+          <div class="hero-avatar"><img src="headshot.jpg" alt="赵紫怡" /></div>
+          <p class="hero-eyebrow">Available for opportunities · 2026 届应届生</p>
+          <h1>你好，我是<br /><em>赵紫怡</em></h1>
+          <p class="hero-bio">
+            浙江理工大学信息与计算科学专业应届生，专注于数据分析与运营策略。
+            曾先后在快手科技、群核科技、火奴数据实习，擅长用数据驱动决策，也是一名摄影创作者。
+          </p>
+          <a class="hero-cta" href="#contact">联系我 →</a>
+        </div>
+        <div class="hero-photo">
+          <img src="avatar.jpg" alt="赵紫怡" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <p class="section-label">技能</p>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <p class="skill-group-title">编程语言</p>
+          <div class="skill-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Java</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <p class="skill-group-title">数据分析</p>
+          <div class="skill-tags">
+            <span class="tag">Tableau</span>
+            <span class="tag">SPSS</span>
+            <span class="tag">Excel</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <p class="skill-group-title">办公 / 其他</p>
+          <div class="skill-tags">
+            <span class="tag">Word</span>
+            <span class="tag">PPT</span>
+            <span class="tag">数学建模</span>
+            <span class="tag">English CET-6</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Internship -->
+  <section id="internship">
+    <div class="container">
+      <p class="section-label">实习经历</p>
+      <div class="internship-list">
+
+        <div class="internship-item">
+          <div class="internship-header">
+            <span class="internship-company">快手科技</span>
+            <span class="internship-period">2025.08 — 至今</span>
+          </div>
+          <p class="internship-role">行业运营实习生</p>
+          <ul class="internship-points">
+            <li><strong>招商运营：</strong>拆解 Y25 运营数据，识别重点一级类目 36 个、重点产业带 51 个，制定商家开发优先级，建立招商进度监控体系。</li>
+            <li><strong>商品运营：</strong>参与站外爆品招商专项，优化招商线索结构并搭建成交看板；提出重点品加深补贴、店铺自播商品挂车等运营建议，间接促成 GMV 提升 20%。</li>
+            <li><strong>商达撮合：</strong>搭建选品框架，策划「直播单单返佣专场」与「双十一源头工厂直发」等活动，累计 1.4w 达人上架 10w 商品。</li>
+            <li><strong>大促策略：</strong>识别高爆发高 GMV 类目 65 个并开展定向招品，双十一核心定招商家引入 100+ 家，双高类目贡献占整体 GMV 增量 74%；后续双十二双高类目 GMV 贡献提升 5%。</li>
+          </ul>
+        </div>
+
+        <div class="internship-item">
+          <div class="internship-header">
+            <span class="internship-company">群核科技</span>
+            <span class="internship-period">2025.02 — 2025.08</span>
+          </div>
+          <p class="internship-role">策略运营实习生</p>
+          <ul class="internship-points">
+            <li><strong>智能客服优化：</strong>推动"酷小花"智能客服升级，通过统一入口、知识库构建、语料库优化等路径，调用量同比提升 15%，抽样准确率达 82%。</li>
+            <li><strong>用户运营：</strong>针对 3.3w 用户制定分层策略，引入 RPA 完成自动化流程，有效释放 90% 人力，完成 51% 半年度目标。</li>
+            <li><strong>社群运营：</strong>对 0 活/低活用户构建专属服务社群，规划新人入群礼、干货教程、UGC 互动等内容体系，将 0 活/低活用户占比降低 20%+。</li>
+          </ul>
+        </div>
+
+        <div class="internship-item">
+          <div class="internship-header">
+            <span class="internship-company">火奴数据</span>
+            <span class="internship-period">2024.10 — 2025.01</span>
+          </div>
+          <p class="internship-role">商业分析实习生</p>
+          <ul class="internship-points">
+            <li><strong>数据监控：</strong>主导"红豆"品牌双十一活动数据监控，形成日/周可视化统计报告，提升业务取数效率 15%+；挖掘渠道 30+ 内衣行业检索关键词，优化投流效果。</li>
+            <li><strong>策略分析：</strong>提炼城市白领、大学生等 6 类用户画像，对大盘 GMV 横向拆解归因；提出联动平台年货节、参与头部 KOL 直播等具体建议。</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-label">项目经历</p>
+      <div class="projects-list">
+
+        <a class="project-item" href="#" target="_blank">
+          <div>
+            <p class="project-title">全国大学生数学建模竞赛 · 浙江省三等奖</p>
+            <p class="project-desc">以"板凳龙"轨迹为课题，运用微分方程、四阶龙格-库塔法与牛顿迭代法，精确模拟 300 秒内各把手运动轨迹与速度，建立碰撞判断与路径优化模型。</p>
+            <div class="project-tags">
+              <span class="project-tag">数学建模</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">省级三等奖</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <a class="project-item" href="https://www.xiaohongshu.com" target="_blank">
+          <div>
+            <p class="project-title">小红书自媒体 · 枣子义</p>
+            <p class="project-desc">围绕专业摄影与定制跟拍运营小红书账号，深度分析 100+ 热门账号后以"大学生低价领证跟拍"切入，打造多个 5w+ 浏览笔记，沉淀私域用户 100+，转化订单 20+，转介绍涨粉 150+。</p>
+            <div class="project-tags">
+              <span class="project-tag">内容运营</span>
+              <span class="project-tag">用户增长</span>
+              <span class="project-tag">摄影创作</span>
+            </div>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Hobbies -->
+  <section id="hobbies">
+    <div class="container">
+      <p class="section-label">日常 / 爱好</p>
+      <div class="hobbies-grid">
+
+        <div class="hobby-card hobby-card--bake">
+          <div class="photo-gallery">
+            <div class="photo-main">
+              <img id="bake-featured" src="bake1.jpg" alt="烘焙作品" />
+            </div>
+            <div class="photo-thumbs">
+              <img src="bake1.jpg" alt="" class="bake-thumb thumb active" onclick="switchBake(this)" />
+              <img src="bake2.jpg" alt="" class="bake-thumb thumb" onclick="switchBake(this)" />
+              <img src="bake3.jpg" alt="" class="bake-thumb thumb" onclick="switchBake(this)" />
+            </div>
+          </div>
+          <p class="hobby-title">烘焙</p>
+          <p class="hobby-desc">喜欢在周末钻进厨房，研究各种面包和甜点配方。从肉桂贝果到坚果布朗尼，烘焙让我在数据和逻辑之外找到一种动手创作的满足感。</p>
+        </div>
+
+        <div class="hobby-card hobby-card--photo">
+          <div class="photo-gallery">
+            <div class="photo-main">
+              <img id="photo-featured" src="photo1.jpg" alt="摄影作品" />
+            </div>
+            <div class="photo-thumbs">
+              <img src="photo1.jpg" alt="" class="thumb active" onclick="switchPhoto(this)" />
+              <img src="photo2.jpg" alt="" class="thumb" onclick="switchPhoto(this)" />
+              <img src="photo3.jpg" alt="" class="thumb" onclick="switchPhoto(this)" />
+            </div>
+          </div>
+          <p class="hobby-title">摄影</p>
+          <p class="hobby-desc">热爱用镜头记录真实瞬间，尤其擅长人像与胶片风格跟拍。在小红书以"枣子义"为账号运营摄影内容，多篇作品获 5w+ 浏览，也接受定制跟拍预约。</p>
+        </div>
+
+      </div>
+
+      <!-- Daily photos strip -->
+      <div class="daily-strip">
+        <p class="daily-strip-label">日常随拍</p>
+        <div class="daily-photos">
+          <div class="daily-photo">
+            <img src="daily1.jpg" alt="夜景日常" />
+          </div>
+          <div class="daily-photo">
+            <img src="daily2.jpg" alt="雪地日常" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <section id="contact">
+    <div class="container">
+      <p class="section-label">联系</p>
+      <p class="contact-intro">欢迎通过以下方式联系我，无论是工作机会、合作项目还是摄影跟拍预约。</p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:2296737961@qq.com">
+          <div class="contact-link-left">
+            <span class="contact-platform">Email</span>
+            <span class="contact-value">2296737961@qq.com</span>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a class="contact-link" href="tel:17365694543">
+          <div class="contact-link-left">
+            <span class="contact-platform">Phone</span>
+            <span class="contact-value">173-6569-4543</span>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a class="contact-link" href="https://www.xiaohongshu.com" target="_blank">
+          <div class="contact-link-left">
+            <span class="contact-platform">小红书</span>
+            <span class="contact-value">枣子义</span>
+          </div>
+          <span class="contact-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 · 赵紫怡 · Built with care</p>
+    </div>
+  </footer>
+  <script>
+    function previewImg(input, previewId) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.getElementById(previewId);
+        img.src = e.target.result;
+        img.style.display = 'block';
+        img.parentElement.querySelector('.placeholder-text').style.display = 'none';
+        img.parentElement.querySelector('.placeholder-icon').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function switchPhoto(thumb) {
+      document.getElementById('photo-featured').src = thumb.src;
+      document.querySelectorAll('.thumb:not(.bake-thumb)').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    }
+
+    function switchBake(thumb) {
+      document.getElementById('bake-featured').src = thumb.src;
+      document.querySelectorAll('.bake-thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    }
+  </script>
+</body>
+</html>
